@@ -1,99 +1,128 @@
 """
+File: Q1.py
+Author: Nathan Lam
+Description: Defines the simpleDatabase class which stores items and can return
+             the unique elements as well as the frequency of elements.
+
 Write a new class with the following requirements
 a. To store a list of items
 b. A method to return all unique items from the list
 c. A method to return all items and their frequency
 d. Should be able to append/insert new items to the list
 """
+
 # ==========================
-# Class definition
+# Class Definition 
 # ==========================
 
 class simpleDatabase(object):
+
+    # Ensure only one instance of the database
     _instances = []
-    _internal_list = []
 
-    def __init__(self):
-        """
-        Initialize simple database
+    # Initialize class instance 
+    def __init__(self, contents=None):
 
-        Args: 
-            None
-
-        Returns:
-            None
-        """
         if(len(self._instances) > 1):
-            print("ERROR: One instance of simpleDatabase is already running!")
+            print "ERROR: One instance of simpleDatabase is already running!"
             exit(1)
         self._instances.append(self)
 
-    def insert(self, l):
-        """
-        Takes in a list and inserts the contents into the internal database
+        if not contents:
+            self.contents = []
+        else:
+            self.contents = contents
 
-        Args:
-            l (list): list to insert into the database
+        self.initializeUnique(contents)
+        self.initializeFrequency(contents)
 
-        Returns:
-            None
-        """
-        if not l:
+    # Initialize structure to contain unique contents
+    def initializeUnique(self, contents):
+        self.unique = set()
+        if not contents:
             return
-        for item in l:
-            self._internal_list.append(item)
-   
-    def unique(self):
-        """
-        Iterates through the internal database to find the unique items 
+        for item in contents:
+            if item not in self.unique:
+                self.unique.add(item)
 
-        Args:
-            None
-
-        Returns:
-            All unique items from the database as a list
-        """
-        hash_table = {}
-        ans = []
-        for item in self._internal_list:
-            if item not in hash_table:
-                hash_table[item] = 1
-                ans.append(item)
-        return ans
-    
-    def databaseItems(self):
-        """
-        Returns all items in the database and its frequency
-
-        Args:
-            None
-
-        Returns:
-            A hash table with key (item) and value (frequency)
-        """
-        hash_table = {}
-        for item in self._internal_list:
-            if item not in hash_table:
-                hash_table[item] = 1
+    # Initialize structure to keep track of the frequency of the contents 
+    def initializeFrequency(self, contents):
+        self.frequency = {}
+        if not contents:
+            return
+        for item in contents:
+            if item not in self.frequency:
+                self.frequency[item] = 1
             else:
-                hash_table[item] += 1
-        return hash_table
+                self.frequency[item] += 1
+
+    # Insert content into list and update properties
+    def insert(self, content, index):
+        if (index > len(self.contents) - 1) or index < 0:
+            print "ERROR: Invalid index value, out of bounds!"
+            exit(1)
+        self.contents.insert(index, content)
+        self.updateUnique(content)
+        self.updateFrequency(content)
+
+    # Append content to end of the list and update properties
+    def append(self, content):
+        self.contents.append(content)
+        self.updateUnique(content)
+        self.updateFrequency(content)
+
+    # Update unique contents in the list 
+    def updateUnique(self, content):
+        if content not in self.unique:
+            self.unique.add(content)
+
+    # Update frequency of content in the list
+    def updateFrequency(self, content):
+        if content not in self.frequency:
+            self.frequency[content] = 1
+        else:
+            self.frequency[content] += 1
+
+    # Return unique contents as a list
+    def getUnique(self):
+        return list(self.unique)
+
+    # Return the frequency as a hash table with content (key) and frequency (value)
+    def getFrequency(self):
+        return self.frequency
+   
+    # Return all of the contents in the list
+    def getContents(self):
+        return self.contents
 
 # ==========================
 # Test Driver 
 # ==========================
 
+# Create a database
 test_list = [3,3,3,123,3,1,5,6,7]
-database = simpleDatabase()
+database = simpleDatabase(test_list)
 
 # Returns all current items and their frequency
-print database.databaseItems()
+print database.getContents()
 
-# Insert a list
-database.insert(test_list)
+# Returns unique items
+print database.getUnique()
+
+# Returns the contents with its respective frequency
+print database.getFrequency() 
+
+# Add items into list
+database.append(9999)
+database.insert(12333, 3)
+database.insert(3, 3)
 
 # Returns all current items and their frequency
-print database.databaseItems()
+print database.getContents()
 
-# Returns all unique items from the database
-print database.unique()
+# Returns unique items
+print database.getUnique()
+
+# Returns the contents with its respective frequency
+print database.getFrequency() 
+
