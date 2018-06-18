@@ -45,6 +45,20 @@ h = "123666.6345"
 i = "-123"
 j = "0"
 
+print("""
+Some unit tests are:
+a = "1"
+b = "1.0"
+c = "asd"
+d = "A1B2C3.3;;'"
+e = "{\{{{PP{O}}"
+f = "1#2777777*"
+g = "+asssssdf"
+h = "123666.6345"
+i = "-123"
+j = "0"
+""")
+print("Result from convert function:")
 print type(convert(a))
 print type(convert(b))
 print type(convert(c))
