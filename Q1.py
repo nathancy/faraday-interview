@@ -2,7 +2,8 @@
 File: Q1.py
 Author: Nathan Lam
 Description: Defines the simpleDatabase class which stores items and can return
-             the unique elements as well as the frequency of elements.
+             the unique elements as well as the frequency of elements. Contains a test driver
+             to test the functions of the class.
 
 Write a new class with the following requirements
 a. To store a list of items
@@ -17,17 +18,8 @@ d. Should be able to append/insert new items to the list
 
 class simpleDatabase(object):
 
-    # Ensure only one instance of the database
-    _instances = []
-
     # Initialize class instance 
     def __init__(self, contents=None):
-
-        if(len(self._instances) > 1):
-            print "ERROR: One instance of simpleDatabase is already running!"
-            exit(1)
-        self._instances.append(self)
-
         if not contents:
             self.contents = []
         else:
@@ -59,7 +51,7 @@ class simpleDatabase(object):
     # Insert content into list and update properties
     def insert(self, content, index):
         if (index > len(self.contents) - 1) or index < 0:
-            print "ERROR: Invalid index value, out of bounds!"
+            print("ERROR: Invalid index value, out of bounds!")
             exit(1)
         self.contents.insert(index, content)
         self.updateUnique(content)
@@ -99,30 +91,73 @@ class simpleDatabase(object):
 # Test Driver 
 # ==========================
 
-# Create a database
+# ==========================================
+# Test #1
+# ==========================================
+print("Test #1 (Initial list empty)")
+test_list = []
+database1 = simpleDatabase(test_list)
+
+print("Initial contents of list are:")
+print(database1.getContents())
+
+print("Unique contents of the list are:")
+print(database1.getUnique())
+
+print("The contents of the list with its respective frequency are:")
+print(database1.getFrequency())
+
+print("Appending some contents into the list")
+for num in range(5):
+    database1.append(num)
+
+print("Current contents of the list")
+print(database1.getContents())
+
+print("Inserting some items into the list")
+database1.insert(123, 4)
+database1.insert(3, 5)
+database1.insert(4, 5)
+
+print("Contents of the list after inserting items")
+print(database1.getContents())
+
+print("Unique contents of the list are:")
+print(database1.getUnique())
+
+print("The contents of the list with its respective frequency are:")
+print(database1.getFrequency())
+
+print(" ")
+
+# ==========================================
+# Test #2
+# ==========================================
+print("Test #2 (Initial list not empty)")
 test_list = [3,3,3,123,3,1,5,6,7]
-database = simpleDatabase(test_list)
+database2 = simpleDatabase(test_list)
 
-# Returns all current items and their frequency
-print database.getContents()
+print("Initial contents of list are:")
+print(database2.getContents())
 
-# Returns unique items
-print database.getUnique()
+print("Unique contents of the list are:")
+print(database2.getUnique())
 
-# Returns the contents with its respective frequency
-print database.getFrequency() 
+print("The contents of the list with its respective frequency are:")
+print(database2.getFrequency())
 
-# Add items into list
-database.append(9999)
-database.insert(12333, 3)
-database.insert(3, 3)
+print("Inserting and appending some contents into the list")
+database2.append(9999)
+database2.insert(12333, 3)
+database2.insert(3, 3)
+database2.insert(3, 4)
 
-# Returns all current items and their frequency
-print database.getContents()
+print("Contents of the list after inserting items")
+print(database2.getContents())
 
-# Returns unique items
-print database.getUnique()
+print("Unique contents of the list are:")
+print(database2.getUnique())
 
-# Returns the contents with its respective frequency
-print database.getFrequency() 
+print("The contents of the list with its respective frequency are:")
+print(database2.getFrequency())
 
