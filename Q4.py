@@ -20,6 +20,6 @@ def minimumHelper(a, b):
 def findMinimumScale(l):
     minimum = float('inf')
     for number in l:
-        miniumum = minimumHelper(miniumum, number)
+        minimum = minimumHelper(minimum, number)
     return minimum
 
